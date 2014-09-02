@@ -53,12 +53,24 @@ describe('The only() function', function () {
     result.c.z.should.equal(obj.c.z)  
   })
 
-  it('should exclude whitelist keys with no default', function() {
+  it('should exclude whitelist keys with no default', function () {
     result.should.not.have.property('u')
   })
 
-  it('should use the value of the whitelist prop as a default', function() {
+  it('should use the value of the whitelist prop as a default', function () {
     result.should.have.property('v', testDefault)
+  })
+
+  it('should allow for nested arrays of objects', function () {
+    var whitelist = {a: [{x: null}]}
+    var obj = {a: [{x: 1, y: 2}, {x: 1, y: 3}]}
+    var result = only(whitelist, obj)
+    result.a.should.have.lengthOf(obj.a.length)
+    result.a.forEach(function (item) {
+      item.should.have.property('x', 1)
+      item.should.not.have.property('y')
+      item.should.not.have.property('z')
+    })
   })
 
 })
