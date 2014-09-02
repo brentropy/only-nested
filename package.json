@@ -11,5 +11,19 @@
   "devDependencies": {
     "mocha": "^1.21.4",
     "should": "^4.0.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brentburgoyne/only-nested.git"
+  },
+  "keywords": [
+    "only",
+    "filter",
+    "whitelist",
+    "object"
+  ],
+  "bugs": {
+    "url": "https://github.com/brentburgoyne/only-nested/issues"
+  },
+  "homepage": "https://github.com/brentburgoyne/only-nested"
 }
