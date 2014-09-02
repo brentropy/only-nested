@@ -45,6 +45,13 @@ only(whitelist, obj)
 /*
 ```
 
+## Default Value
+
+The value of a key in the `whitelist` object will be used as a default value in
+the returned object if the key is not present in the source object. If you want
+to exclude the key in the result set the value to `only.NO_DEFAULT` or simply
+`only._` and not default value will be set.
+
 ## Partial Application
 
 ```js
