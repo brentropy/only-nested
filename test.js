@@ -3,14 +3,18 @@ var only = require('./index')
 
 describe('The only() function', function () {
   
+  var testDefault = {}
+
   var whitelist = {
-    a: null,
+    a: only._,
     b: null,
     c: {
       x: null,
       y: null,
       z: null
-    }
+    },
+    u: only._,
+    v: testDefault
   }
 
   var obj = {
@@ -25,8 +29,9 @@ describe('The only() function', function () {
     d: 4
   }
 
+  var result = only(whitelist, obj)
+
   it('should return an object with only the whitelisted keys', function () {
-    var result = only(whitelist, obj)
     result.should.have.property('a')
     result.should.have.property('b')
     result.should.have.property('c')
@@ -34,7 +39,6 @@ describe('The only() function', function () {
   })
 
   it('should support whitelisting nested objects', function () {
-    var result = only(whitelist, obj)
     result.c.should.have.property('x')
     result.c.should.have.property('y')
     result.c.should.have.property('z')
@@ -42,12 +46,19 @@ describe('The only() function', function () {
   })
 
   it('should return the right value for the whitelisted key', function () {
-    var result = only(whitelist, obj)
     result.a.should.equal(obj.a)  
     result.b.should.equal(obj.b)  
     result.c.x.should.equal(obj.c.x)  
     result.c.y.should.equal(obj.c.y)  
     result.c.z.should.equal(obj.c.z)  
+  })
+
+  it('should exclude whitelist keys with no default', function() {
+    result.should.not.have.property('u')
+  })
+
+  it('should use the value of the whitelist prop as a default', function() {
+    result.should.have.property('v', testDefault)
   })
 
 })
