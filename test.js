@@ -69,4 +69,11 @@ describe('The only() function', function () {
     })
   })
 
+  it('should include null values from source object', function() {
+    var whitelist = {a: null}
+    var obj = {a: null}
+    var result = only(whitelist, obj)
+    result.should.have.property('a', null)
+  })
+
 })

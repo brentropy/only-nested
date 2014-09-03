@@ -13,7 +13,7 @@ function only(whitelist, obj) {
   }
   var ret = {}
   Object.keys(whitelist).forEach(function (key) {
-    if (obj[key]) {
+    if (obj[key] !== void 0) {
       if (isObject(whitelist[key]) && isObject(obj[key])) {
         ret[key] = only(whitelist[key], obj[key])
       } else if (Array.isArray(whitelist[key]) && isObject(whitelist[key][0])) {
