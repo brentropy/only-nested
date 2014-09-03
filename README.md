@@ -1,5 +1,10 @@
 # only-nested
 
+[![npm](http://img.shields.io/npm/v/only-nested.svg?style=flat)](https://www.npmjs.org/package/only-nested)
+[![Travis](http://img.shields.io/travis/brentburgoyne/only-nested.svg?style=flat)](https://travis-ci.org/brentburgoyne/only-nested)
+[![Code Climate](http://img.shields.io/codeclimate/github/brentburgoyne/only-nested.svg?style=flat)](https://codeclimate.com/github/brentburgoyne/only-nested)
+[![Code Climate Coverage](http://img.shields.io/codeclimate/coverage/github/brentburgoyne/only-nested.svg?style=flat)](https://codeclimate.com/github/brentburgoyne/only-nested)
+
 Return on the whitelisted properties of an object, similar to 
 [only](https://github.com/visionmedia/node-only), but with support for nested
 properties.
