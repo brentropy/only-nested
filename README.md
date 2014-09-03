@@ -47,7 +47,7 @@ only(whitelist, obj)
     y: 3
   }
 }
-/*
+*/
 ```
 
 ## Arrays of Objects
