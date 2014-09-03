@@ -1,4 +1,4 @@
-# Only Nested
+# only-nested
 
 Return on the whitelisted properties of an object, similar to 
 [only](https://github.com/visionmedia/node-only), but with support for nested
@@ -45,16 +45,60 @@ only(whitelist, obj)
 /*
 ```
 
-## Default Value
+## Arrays of Objects
 
-The value of a key in the `whitelist` object will be used as a default value in
-the returned object if the key is not present in the source object. If you want
-to exclude the key in the result set the value to `only.NO_DEFAULT` or simply
-`only._` and not default value will be set.
+The `only()` function also supports whitelisting keys of objects in an array.
+This is expressed in the whitelist by having an array with a whitelist object as
+the first element.
+
+```js
+var whitelistWithArray = {
+  a: [{
+    x: null
+  }]
+}
+
+var objWithArray = {
+  a: [
+    {
+      x: 1,
+      y: 2
+    },
+    {
+      x: 3,
+      y: 4,
+      z: 5
+    }
+  ]
+}
+
+only(whitelistWithArray, objWithArray)
+/*
+-> {
+  a: [
+    {
+      x: 1
+    },
+    {
+      x: 3
+    }
+  ]
+}
+*/
+```
 
 ## Partial Application
 
+If you call `only()` with a whitelist as the only argument, it returns a
+partially applied function which takes a source object as its only argument.
+
 ```js
-onlyWhitelist = only(whitelist)
+var onlyWhitelist = only(whitelist)
 onlyWhitelist(obj)
+```
+
+It works great with `map()`.
+
+```js
+someArrayOfObjects.map(only({a: null}))
 ```

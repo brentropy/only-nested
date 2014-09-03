@@ -57,10 +57,6 @@ describe('The only() function', function () {
     result.should.not.have.property('u')
   })
 
-  it('should use the value of the whitelist prop as a default', function () {
-    result.should.have.property('v', testDefault)
-  })
-
   it('should allow for nested arrays of objects', function () {
     var whitelist = {a: [{x: null}]}
     var obj = {a: [{x: 1, y: 2}, {x: 1, y: 3}]}

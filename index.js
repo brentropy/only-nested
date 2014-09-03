@@ -1,8 +1,4 @@
-var NO_DEFAULT = {}
-
 module.exports = only
-module.exports.NO_DEFAULT = NO_DEFAULT
-module.exports._ = NO_DEFAULT
 
 /**
  * Return a nested object with only the keys present in a whitelist.
@@ -21,13 +17,12 @@ function only(whitelist, obj) {
       if (isObject(whitelist[key]) && isObject(obj[key])) {
         ret[key] = only(whitelist[key], obj[key])
       } else if (Array.isArray(whitelist[key]) && isObject(whitelist[key][0])) {
-        var items = Array.isArray(obj[key]) ? obj[key] : []
-        ret[key] = items.map(only(whitelist[key][0]))
+        if (Array.isArray(obj[key])) {
+          ret[key] = obj[key].map(only(whitelist[key][0]))
+        }
       } else {
         ret[key] = obj[key]
       }
-    }else if (whitelist[key] !== NO_DEFAULT) {
-      ret[key] = Array.isArray(whitelist[key]) ? [] : whitelist[key]
     }
   })
   return ret
