@@ -1,6 +1,8 @@
 var should = require('should')
 var only = require('./index')
 
+console.log('TESTING');
+
 describe('The only() function', function () {
   
   var testDefault = {}
@@ -76,4 +78,11 @@ describe('The only() function', function () {
     result.should.have.property('a', null)
   })
 
+  it('should include null values in arrays', function() {
+    var whitelist = {a: [{x: null}]}
+    var obj = {a: [{x: 'something'}, null]}
+    var result = only(whitelist, obj)
+    result.a[0].should.have.property('x', 'something')
+    result.a[1].should.equal(null)
+  });
 })
