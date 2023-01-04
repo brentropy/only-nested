@@ -1,8 +1,6 @@
 var should = require('should')
 var only = require('./index')
 
-console.log('TESTING');
-
 describe('The only() function', function () {
   
   var testDefault = {}
