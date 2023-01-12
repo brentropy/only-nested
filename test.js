@@ -81,6 +81,6 @@ describe('The only() function', function () {
     var obj = {a: [{x: 'something'}, null]}
     var result = only(whitelist, obj)
     result.a[0].should.have.property('x', 'something')
-    result.a[1].should.equal(null)
+    should(result.a[1]).equal(null)
   });
 })
