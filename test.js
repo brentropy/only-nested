@@ -76,4 +76,126 @@ describe('The only() function', function () {
     result.should.have.property('a', null)
   })
 
+  describe('mapped types', () => {
+    it('should filter values with mapped types', () => {
+      const mappedObject = {
+        [Symbol.for('key')]: { one: null, two: null, },
+        knownKey: { something: null, otherThing: null, }
+      }
+
+      const val = {
+        a: { one: 1, two: 2 },
+        b: { one: 3, two: 4, three: 5 },
+        c: { four: 4, five: 5 },
+        knownKey: {
+          something: true,
+          otherThing: false,
+          invalidThing: 1000
+        },
+        unknownKey: 'some value'
+      }
+
+      const result = only(mappedObject, val);
+
+      result.should.have.property('a');
+      result.a.should.have.property('one', 1)
+      result.a.should.have.property('two', 2)
+
+      result.should.have.property('b');
+      result.b.should.have.property('one', 3)
+      result.b.should.have.property('two', 4)
+      result.b.should.not.have.property('three')
+
+      result.should.not.have.property('c');
+
+      result.should.have.property('knownKey')
+      result.knownKey.should.have.property('something', true)
+      result.knownKey.should.have.property('otherThing', false)
+      result.knownKey.should.not.have.property('invalidThing')
+
+      result.should.not.have.property('unkownKey')
+    })
+
+    it('should filter values for mapped arrays', () => {
+      const mappedArray = {
+        [Symbol.for('key')]: [{ one: null, two: null, }],
+        knownKey: { something: null, otherThing: null, }
+      }
+
+      const val = {
+        a: [
+          { one: 1, two: 2 },
+          { one: 3, two: 4, three: 5 }
+        ],
+        c: { four: 4, five: 5 },
+        knownKey: {
+          something: true,
+          otherThing: false,
+          invalidThing: 1000
+        },
+        unknownKey: 'some value'
+      }
+
+      const result = only(mappedArray, val)
+
+      result.should.have.property('a')
+      result.a.should.have.lengthOf(2)
+      result.a[0].should.have.property('one', 1)
+      result.a[0].should.have.property('two', 2)
+      result.a[1].should.have.property('one', 3)
+      result.a[1].should.have.property('two', 4)
+      result.a[1].should.not.have.property('three')
+
+      result.should.not.have.property('c')
+
+      result.should.have.property('knownKey')
+      result.knownKey.should.have.property('something', true)
+      result.knownKey.should.have.property('otherThing', false)
+      result.knownKey.should.not.have.property('invalidThing')
+
+      result.should.not.have.property('unkownKey')
+    })
+
+    it('should accept arbitrary values for mapped type with unspecified value', () => {
+      const mappedAny = {
+        [Symbol.for('key')]: null,
+        knownKey: { something: null, otherThing: null, }
+      }
+
+      const val = {
+        a: { one: 1, two: 2 },
+        b: [{ one: 3, two: 4, three: 5 }],
+        c: { four: 4, five: 5 },
+        knownKey: {
+          something: true,
+          otherThing: false,
+          invalidThing: 1000
+        },
+        unknownKey: 'some value'
+      }
+
+      const result = only(mappedAny, val)
+
+      result.should.have.property('a');
+      result.a.should.have.property('one', 1)
+      result.a.should.have.property('two', 2)
+
+      result.should.have.property('b');
+      result.b.should.have.lengthOf(1);
+      result.b[0].should.have.property('one', 3)
+      result.b[0].should.have.property('two', 4)
+      result.b[0].should.have.property('three', 5)
+
+      result.should.have.property('c');
+      result.c.should.have.property('four', 4)
+      result.c.should.have.property('five', 5)
+
+      result.should.have.property('knownKey')
+      result.knownKey.should.have.property('something', true)
+      result.knownKey.should.have.property('otherThing', false)
+      result.knownKey.should.not.have.property('invalidThing')
+
+      result.should.have.property('unknownKey', 'some value')
+    })
+  })
 })

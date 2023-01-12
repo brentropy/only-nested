@@ -25,6 +25,15 @@ var whitelist = {
   b: {
     x: null,
     y: null
+  },
+  // Support for arrays
+  c: [{ some: null, value: null }],
+  d: {
+    // Support for mapped types via the special key [Symbol.for('key')]
+    [Symbol.for('key')]: {
+      one: null,
+      two: null
+    }
   }
 }
 
@@ -35,7 +44,24 @@ var obj = {
     y: 3,
     z: 4
   },
-  c: 5
+  c: [
+    { some: 'some', value: 'value' },
+    { some: 'other', value: 'here', invalid: 'key' }
+  ],
+  d: {
+    someKey: {
+      one: 1,
+      two: 2
+    },
+    someOtherKey: {
+      one: 3,
+      two: 4,
+      three: 5
+    },
+    invalidValue: 'some value',
+    otherInvalidValue: { four: 4, five: 5 }
+  },
+  e: 'nope'
 }
 
 only(whitelist, obj)
@@ -45,6 +71,14 @@ only(whitelist, obj)
   b: {
     x: 2,
     y: 3
+  },
+  c: [
+    { some: 'some', value: 'value' },
+    { some: 'other', value: 'here' }
+  ],
+  d: {
+    someKey: { one: 1, two: 2 },
+    someOtherKey: { one: 3, two: 4 },
   }
 }
 */
@@ -91,6 +125,12 @@ only(whitelistWithArray, objWithArray)
 }
 */
 ```
+
+## Mapped Types
+
+You can specify a mapped type using the special key `[Symbol.for('key')]`. Types specified as such
+will accept any key, provided it's value conforms to the given spec for the mapped type. See example
+above for more details.
 
 ## Partial Application
 
