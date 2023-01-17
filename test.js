@@ -198,4 +198,12 @@ describe('The only() function', function () {
       result.should.have.property('unknownKey', 'some value')
     })
   })
+
+  it('should include null values in arrays', function() {
+    var whitelist = {a: [{x: null}]}
+    var obj = {a: [{x: 'something'}, null]}
+    var result = only(whitelist, obj)
+    result.a[0].should.have.property('x', 'something')
+    should(result.a[1]).equal(null)
+  });
 })

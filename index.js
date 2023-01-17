@@ -11,6 +11,12 @@ function only(whitelist, obj) {
   if (arguments.length === 1) {
     return only.bind(null, whitelist)
   }
+
+  // If the object is null, it must be a null value in an array. Just return it
+  if (obj === null) {
+    return obj;
+  }
+
   var ret = {}
 
   // Separate mapped type from the rest
