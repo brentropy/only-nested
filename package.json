@@ -1,6 +1,6 @@
 {
   "name": "only-nested",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Return an object with only whitelisted properties.",
   "main": "index.js",
   "scripts": {
