@@ -18,19 +18,52 @@ function only(whitelist, obj) {
   }
 
   var ret = {}
-  Object.keys(whitelist).forEach(function (key) {
-    if (obj[key] !== void 0) {
-      if (isObject(whitelist[key]) && isObject(obj[key])) {
-        ret[key] = only(whitelist[key], obj[key])
-      } else if (Array.isArray(whitelist[key]) && isObject(whitelist[key][0])) {
-        if (Array.isArray(obj[key])) {
-          ret[key] = obj[key].map(only(whitelist[key][0]))
+
+  // Separate mapped type from the rest
+  const { [Symbol.for('key')]: mappedType, ...rest } = whitelist
+  const src = Object.assign({}, obj)
+
+  // Process each concrete key in the object
+  Object.keys(rest).forEach(function (key) {
+    if (src[key] !== void 0) {
+      if (isObject(rest[key]) && isObject(src[key])) {
+        ret[key] = only(rest[key], src[key])
+        delete src[key]
+      } else if (Array.isArray(rest[key]) && isObject(rest[key][0])) {
+        if (Array.isArray(src[key])) {
+          ret[key] = src[key].map(only(rest[key][0]))
+          delete src[key]
         }
       } else {
-        ret[key] = obj[key]
+        ret[key] = src[key]
+        delete src[key]
       }
     }
   })
+
+  // Process mapped types, if necessary
+  if (mappedType !== undefined) {
+    Object.keys(src).forEach(function (key) {
+      if (isObject(mappedType)) {
+        if (isObject(src[key])) {
+          const val = only(mappedType, src[key])
+          if (Object.keys(val).length > 0) {
+            ret[key] = val
+          }
+        }
+      } else if (Array.isArray(mappedType) && isObject(mappedType[0])) {
+        if (Array.isArray(src[key])) {
+          const val = src[key].map(only(mappedType[0]))
+          if (val.length > 0) {
+            ret[key] = val
+          }
+        }
+      } else {
+        ret[key] = src[key]
+      }
+    })
+  }
+
   return ret
 }
 
